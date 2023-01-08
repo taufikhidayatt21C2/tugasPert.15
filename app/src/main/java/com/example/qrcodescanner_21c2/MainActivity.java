@@ -89,6 +89,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             startActivity(intent2);
                         } catch (Exception e2) {
                             Toast.makeText(this, "Not Scanned", Toast.LENGTH_LONG).show();
+                        }// DIAL UP, NOMOR TELEPON
+                        try {
+                            Intent intent2 = new Intent(Intent.ACTION_DIAL, Uri.parse(result.getContents()));
+                            startActivity(intent2);
+                        } catch (Exception e2) {
+                            Toast.makeText(this, " ", Toast.LENGTH_LONG).show();
+                        }
+                        //EMail
+                        if (result.getContents() != null) {
+                            String string = result.getContents();
+                            String[] parts = string.split("[:;]");
+                            String to = parts[2];
+                            String subject = parts[4];
+                            String text = parts[6];
+                            Intent intent = new Intent(Intent.ACTION_SEND);
+                            intent.putExtra(Intent.EXTRA_EMAIL, new String[]{to});
+                            intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+                            intent.putExtra(Intent.EXTRA_TEXT, text);
+                            intent.setType("text/html");
+                            intent.setPackage("com.google.android.gm");
+                            startActivity(Intent.createChooser(intent, "Send mail"));
                         }
                     }
                 }
